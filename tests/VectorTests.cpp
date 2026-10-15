@@ -1,10 +1,9 @@
 //   Copyright 2026 Igor
-#include "Vector.h"
 #include <stdexcept>
 #include <string>
 #include <utility>
 #include "gtest/gtest.h"
-
+#include "lib_vector/Vector.h"
   //    ============================================================
   //    Тесты MemData
   //    ============================================================
@@ -398,9 +397,9 @@ TEST(VectorTest, IteratorArithmetic) {
 }
 
 TEST(VectorTest, EmptyVectorIterator_FAILS_DUE_TO_BUG) {
-  Vector<int> v;
-   //   begin() и end() вызывают front() и back(), которые бросают исключение
-  EXPECT_NO_THROW({
+	Vector<int> v;
+    //  begin() и end() вызывают front() и back(), которые бросают исключение
+	EXPECT_NO_THROW({
     auto b = v.begin();
     auto e = v.end();
     EXPECT_EQ(b, e);

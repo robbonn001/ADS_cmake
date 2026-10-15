@@ -1,17 +1,18 @@
 //      Copyright 2026 Igor
 #pragma once
-#include "memdata.h"
 #include <cstdlib>
 #include <iostream>
 #include <utility>
+
+#include "lib_vector/memdata.h"
 
 template <class T> class Vector {
   MemData<T> storage_;
   size_t front_;   //      индекс первого элемента
   size_t back_;   //      индекс ПОСЛЕ последнего элемента
 
-public:
-  Vector(size_t size = 0, const T *array = nullptr);
+ public:
+  explicit Vector(size_t size = 0, const T *array = nullptr);
   explicit Vector(const std::initializer_list<T> list);
   explicit Vector(const Vector<T> &other);
   explicit Vector(Vector<T> &&other) noexcept;
@@ -105,8 +106,7 @@ public:
 
   void resize(size_t new_size);
   void defragment() noexcept;
-  void
-  realloc(size_t new_capacity) {   
+  void realloc(size_t new_capacity) {
   //      перевыделение памяти с сохранением данных
     storage_.realloc(new_capacity, front_, size());
   }
@@ -137,7 +137,7 @@ public:
   T &operator[](size_t index) noexcept;
   const T &operator[](size_t index) const noexcept;
 
-private:
+ private:
   //  служебный метод получения (геттер) физического индекса по относительному
   size_t getDataIndex(size_t i) const noexcept { return i + front_; }
 };
@@ -213,7 +213,6 @@ template <class T> const T &Vector<T>::back() const {
 }
 
 template <class T> void Vector<T>::resize(size_t new_size) {
-
   size_t needed = front_ + new_size;
   if (new_size <= size()) {
     back_ = needed;
@@ -255,7 +254,7 @@ template <class T> void Vector<T>::pushFront(const T &element) {
     storage_.reallocWithShiftRight(storage_.calculateCapacity_(size() + 1), 0,
                                    size());
     back_++;
-  } else {   
+  } else {
   //   Если front_ == 0, но вектор не полный, сдвигаем элементы вправо
     storage_.shiftRight(0, size());
     back_++;
