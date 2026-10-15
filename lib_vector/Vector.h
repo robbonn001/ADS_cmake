@@ -1,27 +1,30 @@
+// Copyright 2026 Igor
 #pragma once
+#include "memdata.h"
 #include <iostream>
 #include <cstdlib>
-#include "memdata.h"
+#include <utility>
 
 template<class T>
 class Vector {
     MemData<T> storage_;
-    size_t front_;  // индекс первого элемента
-    size_t back_;   // индекс ПОСЛЕ последнего элемента
+    size_t front_;  // РёРЅРґРµРєСЃ РїРµСЂРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
+    size_t back_;   // РёРЅРґРµРєСЃ РџРћРЎР›Р• РїРѕСЃР»РµРґРЅРµРіРѕ СЌР»РµРјРµРЅС‚Р°
 
 public:
+
     Vector(size_t size = 0, const T* array = nullptr);
-    Vector(const std::initializer_list<T> list);
-    Vector(const Vector<T>&);
-    Vector(Vector<T>&&) noexcept;
+    explicit Vector(const std::initializer_list<T> list);
+    explicit Vector(const Vector<T>& other);
+    explicit Vector(Vector<T>&& other) noexcept;
     ~Vector() = default;
 
     template <class Type>
     class Iterator {
         Type* current_;
     public:
-        Iterator(Type* current = nullptr) :current_(current) {}
-        Iterator(const Iterator& other) :current_(other.current_) {}
+        explicit Iterator(Type* current = nullptr) :current_(current) {}
+        explicit Iterator(const Iterator& other) :current_(other.current_) {}
         Iterator<Type>& operator++() {
             ++current_;
             return (*this);
@@ -64,12 +67,18 @@ public:
             return Iterator<Type>(current_ - offset);
         }
 
-        bool operator==(const Iterator<Type>& other) const noexcept { return current_ == other.current_; }
-        bool operator!=(const Iterator<Type>& other) const noexcept { return current_ != other.current_; }
-        bool operator<(const Iterator<Type>& other) const noexcept { return current_ < other.current_; }
-        bool operator<=(const Iterator<Type>& other) const noexcept { return current_ <= other.current_; }
-        bool operator>(const Iterator<Type>& other) const noexcept { return current_ > other.current_; }
-        bool operator>=(const Iterator<Type>& other) const noexcept { return current_ >= other.current_; }
+        bool operator==(const Iterator<Type>& other) 
+		const noexcept { return current_ == other.current_; }
+        bool operator!=(const Iterator<Type>& other) 
+		const noexcept { return current_ != other.current_; }
+        bool operator<(const Iterator<Type>& other) 
+		const noexcept { return current_ < other.current_; }
+        bool operator<=(const Iterator<Type>& other) 
+		const noexcept { return current_ <= other.current_; }
+        bool operator>(const Iterator<Type>& other) 
+		const noexcept { return current_ > other.current_; }
+        bool operator>=(const Iterator<Type>& other) 
+		const noexcept { return current_ >= other.current_; }
     };
 
     template<class Type> class Iterator;
@@ -78,8 +87,10 @@ public:
     template<class Type> class Iterator;
     typedef Iterator<const T> const_iterator;
 
-    const_iterator cbegin() const noexcept { return const_iterator(&storage_[front_]); }
-    const_iterator cend() const noexcept { return const_iterator(&storage_[back_]); }
+    const_iterator cbegin() const noexcept 
+	{ return const_iterator(&storage_[front_]); }
+    const_iterator cend() const noexcept 
+	{ return const_iterator(&storage_[back_]); }
     iterator begin() noexcept { return iterator(&storage_[front_]); }
     iterator end() noexcept { return iterator(&storage_[back_]); }
 
@@ -110,7 +121,7 @@ public:
 
     void resize(size_t new_size);
     void defragment() noexcept;
-    void realloc(size_t new_capacity) { // перевыделение памяти с сохранением данных
+    void realloc(size_t new_capacity) {  // РїРµСЂРµРІС‹РґРµР»РµРЅРёРµ РїР°РјСЏС‚Рё СЃ СЃРѕС…СЂР°РЅРµРЅРёРµРј РґР°РЅРЅС‹С…
         storage_.realloc(new_capacity, front_, size());
     }
 
@@ -120,28 +131,28 @@ public:
         storage_.clear();
     }
 
-    void pushFront(const T&);
-    void pushFrontMany(const T*, size_t);
-    void pushBack(const T&);
-    void pushBackMany(const T*, size_t);
-    void insert(const T&, size_t);
-    void insertMany(const T*, size_t, size_t);
+    void pushFront(const T& element);
+    void pushFrontMany(const T* elements, size_t size);
+    void pushBack(const T& element);
+    void pushBackMany(const T* elements, size_t size);
+    void insert(const T& element, size_t index);
+    void insertMany(const T* elements, size_t size, size_t index);
 
     void popFront();
-    void popFrontMany(size_t);
+    void popFrontMany(size_t count);
     void popBack();
-    void popBackMany(size_t);
-    void erase(size_t);
-    void eraseMany(size_t, size_t);
+    void popBackMany(size_t count);
+    void erase(size_t index);
+    void eraseMany(size_t start, size_t count);
 
-    Vector<T>& operator=(const Vector<T>&) noexcept;
-    Vector<T>& operator=(Vector<T>&&) noexcept;
-    bool operator==(const Vector<T>&) const noexcept;
-    T& operator[](size_t) noexcept;
-    const T& operator[](size_t) const noexcept;
+    Vector<T>& operator=(const Vector<T>& other) noexcept;
+    Vector<T>& operator=(Vector<T>&& other) noexcept;
+    bool operator==(const Vector<T>& other) const noexcept;
+    T& operator[](size_t index) noexcept;
+    const T& operator[](size_t index) const noexcept;
 
 private:
-    //служебный метод получения (геттер) физического индекса по относительному
+    //СЃР»СѓР¶РµР±РЅС‹Р№ РјРµС‚РѕРґ РїРѕР»СѓС‡РµРЅРёСЏ (РіРµС‚С‚РµСЂ) С„РёР·РёС‡РµСЃРєРѕРіРѕ РёРЅРґРµРєСЃР° РїРѕ РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕРјСѓ
     size_t getDataIndex(size_t i) const noexcept {
         return i + front_;
     }
@@ -166,27 +177,30 @@ std::istream& operator>> (std::istream& in, Vector<Type>& vector) {
 }
 
 template<class T>
-Vector<T>::Vector(size_t size, const T* array) :storage_(size, array), front_(0), back_(size) {}
+Vector<T>::Vector(size_t size, const T* array) 
+:storage_(size, array), front_(0), back_(size) {}
 
 template<class T>
-Vector<T>::Vector(const std::initializer_list<T> list) : storage_(list), front_(0), back_(list.size()) {}
+Vector<T>::Vector(const std::initializer_list<T> list) 
+: storage_(list), front_(0), back_(list.size()) {}
 
 template<class T>
-Vector<T>::Vector(const Vector<T>& other) : storage_(other.size()), front_(other.front_), back_(other.back_) {
+Vector<T>::Vector(const Vector<T>& other) 
+: storage_(other.size()), front_(other.front_), back_(other.back_) {
     for (size_t i = 0; i < size(); ++i) {
-        (*this)[i] = other[i]; // копируем элементы, учитывая смещение front_
+        (*this)[i] = other[i];  // РєРѕРїРёСЂСѓРµРј СЌР»РµРјРµРЅС‚С‹, СѓС‡РёС‚С‹РІР°СЏ СЃРјРµС‰РµРЅРёРµ front_
     }
 }
 
 template<class T>
-Vector<T>::Vector(Vector<T>&& other) noexcept : storage_(std::move(other.storage_)), front_(other.front_), back_(other.back_) {
+Vector<T>::Vector(Vector<T>&& other) noexcept 
+: storage_(std::move(other.storage_)), front_(other.front_), back_(other.back_) {
     other.front_ = 0;
     other.back_ = 0;
 }
 
 template<class T>
-T& Vector<T>::front()
-{
+T& Vector<T>::front(){
     if (isEmpty()) {
         throw std::logic_error("ERROR: Empty vector! No front element.");
     }
@@ -194,8 +208,7 @@ T& Vector<T>::front()
 }
 
 template<class T>
-const T& Vector<T>::front() const
-{
+const T& Vector<T>::front() const{
     if (isEmpty()) {
         throw std::logic_error("ERROR: Empty vector! No front element.");
     }
@@ -203,8 +216,7 @@ const T& Vector<T>::front() const
 }
 
 template<class T>
-T& Vector<T>::back()
-{
+T& Vector<T>::back(){
     if (isEmpty()) {
         throw std::logic_error("ERROR: Empty vector! No back element.");
     }
@@ -212,8 +224,7 @@ T& Vector<T>::back()
 }
 
 template<class T>
-const T& Vector<T>::back() const
-{
+const T& Vector<T>::back() const{
     if (isEmpty()) {
         throw std::logic_error("ERROR: Empty vector! No back element.");
     }
@@ -232,9 +243,9 @@ void Vector<T>::resize(size_t new_size) {
     size_t current_capacity = capacity();
 
     if (needed > current_capacity) {
-        // Если front большой — сначала дефрагментируем
+        // Р•СЃР»Рё front Р±РѕР»СЊС€РѕР№ вЂ” СЃРЅР°С‡Р°Р»Р° РґРµС„СЂР°РіРјРµРЅС‚РёСЂСѓРµРј
         if (front_ > current_capacity / 2) {
-            defragment(); // front_ = 0, back_ = size()
+            defragment();  // front_ = 0, back_ = size()
         }
         storage_.realloc(storage_.calculateCapacity_(new_size), 0, size());
     }
@@ -243,13 +254,12 @@ void Vector<T>::resize(size_t new_size) {
 }
 
 template<class T>
-void Vector<T>::defragment() noexcept
-{
-    if (front_ == 0) return;  // уже в начале
+void Vector<T>::defragment() noexcept{
+    if (front_ == 0) return;  // СѓР¶Рµ РІ РЅР°С‡Р°Р»Рµ
 
     size_t current_size = size();
 
-    // Сдвигаем элементы в начало
+    // РЎРґРІРёРіР°РµРј СЌР»РµРјРµРЅС‚С‹ РІ РЅР°С‡Р°Р»Рѕ
     for (size_t i = 0; i < current_size; ++i) {
         storage_[i] = std::move(storage_[getDataIndex(i)]);
     }
@@ -264,10 +274,11 @@ void Vector<T>::pushFront(const T& element) {
         --front_;
     }
     else if (isFull()) {
-        storage_.reallocWithShiftRight(storage_.calculateCapacity_(size() + 1), 0, size());
+    storage_.reallocWithShiftRight(storage_.calculateCapacity_(size() + 1),
+	0, size());
         back_++;
     }
-    else { // Если front_ == 0, но вектор не полный, сдвигаем элементы вправо
+    else {  // Р•СЃР»Рё front_ == 0, РЅРѕ РІРµРєС‚РѕСЂ РЅРµ РїРѕР»РЅС‹Р№, СЃРґРІРёРіР°РµРј СЌР»РµРјРµРЅС‚С‹ РІРїСЂР°РІРѕ
         storage_.shiftRight(0, size());
         back_++;
     }
@@ -276,20 +287,20 @@ void Vector<T>::pushFront(const T& element) {
 
 template<class T>
 void Vector<T>::pushFrontMany(const T* elements, size_t size) {
-    for (int i = size - 1; i >= 0; i--) { //идем с конца т.к. кладем в начало
+    for (int i = size - 1; i >= 0; i--) {  //РёРґРµРј СЃ РєРѕРЅС†Р° С‚.Рє. РєР»Р°РґРµРј РІ РЅР°С‡Р°Р»Рѕ
         pushFront(elements[i]);
     }
 }
 template<class T>
 void Vector<T>::pushBack(const T& element) {
     if (isFull()) {
-        storage_.realloc(storage_.calculateCapacity_(size() + 1), front_, size());
+    storage_.realloc(storage_.calculateCapacity_(size() + 1), front_, size());
     }
     storage_[back_++] = element;
 }
 template<class T>
 void Vector<T>::pushBackMany(const T* elements, size_t size) {
-    for (int i = 0; i < size; i++) { //идем с начала т.к. кладем в конец
+    for (int i = 0; i < size; i++) {  //РёРґРµРј СЃ РЅР°С‡Р°Р»Р° С‚.Рє. РєР»Р°РґРµРј РІ РєРѕРЅРµС†
         pushBack(elements[i]);
     }
 }
@@ -307,7 +318,8 @@ void Vector<T>::insert(const T& element, size_t index) {
     }
     else {
         if (isFull()) {
-            storage_.reallocWithShiftRight(storage_.calculateCapacity_(size() + 1), validIndex, back_ - validIndex);
+        storage_.reallocWithShiftRight(storage_.calculateCapacity_(size() + 1),
+		validIndex, back_ - validIndex);
             front_ = 0;
         }
         else {
@@ -392,9 +404,9 @@ Vector<T>& Vector<T>::operator=(const Vector<T>& other) noexcept {
     if (this != &other) {
         front_ = other.front_;
         back_ = other.back_;
-        storage_.allocateRaw(other.capacity()); // резервируем память под элементы и удаляем старые
+        storage_.allocateRaw(other.capacity());  // СЂРµР·РµСЂРІРёСЂСѓРµРј РїР°РјСЏС‚СЊ РїРѕРґ СЌР»РµРјРµРЅС‚С‹ Рё СѓРґР°Р»СЏРµРј СЃС‚Р°СЂС‹Рµ
         for (size_t i = 0; i < size(); ++i) {
-            (*this)[i] = other[i]; // копируем элементы, учитывая смещение front_
+            (*this)[i] = other[i];  // РєРѕРїРёСЂСѓРµРј СЌР»РµРјРµРЅС‚С‹, СѓС‡РёС‚С‹РІР°СЏ СЃРјРµС‰РµРЅРёРµ front_
         }
     }
     return (*this);
@@ -412,8 +424,7 @@ Vector<T>& Vector<T>::operator=(Vector<T>&& other) noexcept {
 }
 
 template<class T>
-bool Vector<T>::operator==(const Vector<T>& other) const noexcept
-{
+bool Vector<T>::operator==(const Vector<T>& other) const noexcept{
     if (size() != other.size()) return false;
     for (size_t i = 0; i < size(); ++i) {
         if ((*this)[i] != other[i]) return false;
@@ -430,5 +441,3 @@ template<class T>
 T& Vector<T>::operator[](size_t i) noexcept {
     return storage_[getDataIndex(i)];
 }
-
-

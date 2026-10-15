@@ -1,5 +1,6 @@
-#include "gtest/gtest.h"
+// Copyright 2026 Igor
 #include "Vector.h"
+#include "gtest/gtest.h"
 #include <stdexcept>
 #include <string>
 
