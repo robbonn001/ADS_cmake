@@ -14,7 +14,7 @@ cd build
 
 :: Запускаем генерацию проекта CMake (для Visual Studio)
 echo Запуск CMake...
-cmake -G "Visual Studio 18 2026" ..
+cmake -G "Visual Studio 17 2022" ..
 
 :: Проверяем, успешно ли отработал CMake
 if %errorlevel% equ 0 (
@@ -25,7 +25,7 @@ if %errorlevel% equ 0 (
     set "found="
     
     :: Ищем файл .slnx в текущей папке (build)
-    for %%f in (*.slnx) do (
+    for %%f in (*.sln) do (
         set "found=1"
         echo Найдено решение: %%f
         echo Открываю...

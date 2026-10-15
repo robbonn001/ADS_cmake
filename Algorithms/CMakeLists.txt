@@ -1,1 +1,2 @@
-create_project_lib(Algorithm_1)
+create_project_lib(Algorithms)
+add_depend(Algorithms StackOnMass ../LibStackOnMass)
