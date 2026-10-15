@@ -11,7 +11,6 @@ template <class T> class Vector {
   size_t back_;   //      индекс ПОСЛЕ последнего элемента
 
 public:
-
   Vector(size_t size = 0, const T *array = nullptr);
   explicit Vector(const std::initializer_list<T> list);
   explicit Vector(const Vector<T> &other);
@@ -107,7 +106,8 @@ public:
   void resize(size_t new_size);
   void defragment() noexcept;
   void
-  realloc(size_t new_capacity) {   //      перевыделение памяти с сохранением данных
+  realloc(size_t new_capacity) {   
+  //      перевыделение памяти с сохранением данных
     storage_.realloc(new_capacity, front_, size());
   }
 
@@ -138,7 +138,7 @@ public:
   const T &operator[](size_t index) const noexcept;
 
 private:
-    //    служебный метод получения (геттер) физического индекса по относительному
+  //  служебный метод получения (геттер) физического индекса по относительному
   size_t getDataIndex(size_t i) const noexcept { return i + front_; }
 };
 
@@ -172,7 +172,7 @@ template <class T>
 Vector<T>::Vector(const Vector<T> &other)
     : storage_(other.size()), front_(other.front_), back_(other.back_) {
   for (size_t i = 0; i < size(); ++i) {
-    (*this)[i] = other[i];   //      копируем элементы, учитывая смещение front_
+    (*this)[i] = other[i];   //   копируем элементы, учитывая смещение front_
   }
 }
 
@@ -255,7 +255,8 @@ template <class T> void Vector<T>::pushFront(const T &element) {
     storage_.reallocWithShiftRight(storage_.calculateCapacity_(size() + 1), 0,
                                    size());
     back_++;
-  } else {   //      Если front_ == 0, но вектор не полный, сдвигаем элементы вправо
+  } else {   
+  //   Если front_ == 0, но вектор не полный, сдвигаем элементы вправо
     storage_.shiftRight(0, size());
     back_++;
   }
@@ -264,7 +265,7 @@ template <class T> void Vector<T>::pushFront(const T &element) {
 
 template <class T>
 void Vector<T>::pushFrontMany(const T *elements, size_t size) {
-  for (int i = size - 1; i >= 0; i--) {   //    идем с конца т.к. кладем в начало
+  for (int i = size - 1; i >= 0; i--) {  //  идем с конца т.к. кладем в начало
     pushFront(elements[i]);
   }
 }
@@ -369,10 +370,9 @@ Vector<T> &Vector<T>::operator=(const Vector<T> &other) noexcept {
     front_ = other.front_;
     back_ = other.back_;
     storage_.allocateRaw(
-        other
-            .capacity());   //      резервируем память под элементы и удаляем старые
+    other.capacity());   //   резервируем память под элементы и удаляем старые
     for (size_t i = 0; i < size(); ++i) {
-      (*this)[i] = other[i];   //      копируем элементы, учитывая смещение front_
+      (*this)[i] = other[i];  //  копируем элементы, учитывая смещение front_
     }
   }
   return (*this);

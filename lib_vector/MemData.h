@@ -7,7 +7,7 @@
 #include <string>    //     для std::getline
 #include <utility>
 
-#define MEM_STEP 16  
+#define MEM_STEP 16
 //     шаг: сколько выделяется ячеек памяти минимум при выделении памяти
 
 template <class T> class MemData {
@@ -15,7 +15,6 @@ template <class T> class MemData {
   size_t capacity_;
 
 public:
-
   MemData(size_t size = 0, const T *data = nullptr);
   explicit MemData(std::initializer_list<T> list);
   explicit MemData(const MemData<T> &other) = delete;
@@ -30,12 +29,14 @@ public:
   T &at(size_t index);
   const T &at(size_t index) const;
 
-  void allocateRaw(size_t capacity);   //     перевыделение памяти без сохранения
-                                       //     данных (возможно уменьшение capasity)
-  void clear() noexcept;   //     освобождение памяти
+  void allocateRaw(size_t capacity);   
+  //     перевыделение памяти без сохранения
+  //     данных (возможно уменьшение capasity)
+  void clear() noexcept;   //   освобождение памяти
   void realloc(size_t capacity, size_t start,
-               size_t size);   //     перевыделение памяти с сохранением данных в
-                               //     диапазоне [start, start + size)
+               size_t size);   
+			   //     перевыделение памяти с сохранением данных в
+               //     диапазоне [start, start + size)
   void shiftRight(size_t start, size_t count);   //    сдвиг элементов вправо
   void shiftLeft(size_t start, size_t count);   //    сдвиг элементов влево
   void reallocWithShiftRight(size_t newCapacity, size_t start, size_t count);
