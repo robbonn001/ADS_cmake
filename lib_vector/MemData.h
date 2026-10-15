@@ -1,14 +1,14 @@
-//  Copyright 2026 Igor
+  //    Copyright 2026 Igor
 #pragma once
-#include <cstdlib> //   для рандома
+#include <cstdlib>   //     для рандома
 #include <ctime>
 #include <initializer_list>
-#include <sstream> //   для std::istringstream
-#include <string>  //   для std::getline
+#include <sstream>   //     для std::istringstream
+#include <string>    //     для std::getline
 #include <utility>
 
-#define MEM_STEP                                                               \
-  16 //   шаг: сколько выделяется ячеек памяти минимум при выделении памяти
+#define MEM_STEP 16  
+//     шаг: сколько выделяется ячеек памяти минимум при выделении памяти
 
 template <class T> class MemData {
   T *data_;
@@ -30,18 +30,18 @@ public:
   T &at(size_t index);
   const T &at(size_t index) const;
 
-  void allocateRaw(size_t capacity); //   перевыделение памяти без сохранения
-                                     //   данных (возможно уменьшение capasity)
-  void clear() noexcept; //   освобождение памяти
+  void allocateRaw(size_t capacity);   //     перевыделение памяти без сохранения
+                                       //     данных (возможно уменьшение capasity)
+  void clear() noexcept;   //     освобождение памяти
   void realloc(size_t capacity, size_t start,
-               size_t size); //   перевыделение памяти с сохранением данных в
-                             //   диапазоне [start, start + size)
-  void shiftRight(size_t start, size_t count); //  сдвиг элементов вправо
-  void shiftLeft(size_t start, size_t count); //  сдвиг элементов влево
+               size_t size);   //     перевыделение памяти с сохранением данных в
+                               //     диапазоне [start, start + size)
+  void shiftRight(size_t start, size_t count);   //    сдвиг элементов вправо
+  void shiftLeft(size_t start, size_t count);   //    сдвиг элементов влево
   void reallocWithShiftRight(size_t newCapacity, size_t start, size_t count);
 
   size_t calculateCapacity_(
-      size_t capacity); //  вычисление нового размера памяти с учетом MEM_STEP
+      size_t capacity);   //    вычисление нового размера памяти с учетом MEM_STEP
 
   MemData<T> &operator=(const MemData<T> &other) = delete;
   MemData<T> &operator=(MemData<T> &&other) noexcept;
@@ -168,12 +168,12 @@ void MemData<T>::reallocWithShiftRight(size_t newCapacity, size_t start,
   }
 
   size_t i = 0;
-  //   Копируем до start
+    //     Копируем до start
   for (; i < start; ++i) {
     newData[i] = std::move(data_[i]);
   }
-  //   Копируем со сдвигом на 1 элемент вправо, чтобы освободить место для
-  //   вставки
+    //     Копируем со сдвигом на 1 элемент вправо, чтобы освободить место для
+    //     вставки
   for (; i < start + count; ++i) {
     newData[i + 1] = std::move(data_[i]);
   }
