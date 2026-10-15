@@ -21,7 +21,7 @@ template <class T> class Vector {
   template <class Type> class Iterator {
     Type *current_;
 
-  public:
+   public:
     explicit Iterator(Type *current = nullptr) : current_(current) {}
     explicit Iterator(const Iterator &other) : current_(other.current_) {}
     Iterator<Type> &operator++() {

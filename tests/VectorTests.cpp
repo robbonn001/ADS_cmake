@@ -397,9 +397,9 @@ TEST(VectorTest, IteratorArithmetic) {
 }
 
 TEST(VectorTest, EmptyVectorIterator_FAILS_DUE_TO_BUG) {
-	Vector<int> v;
+    Vector<int> v;
     //  begin() и end() вызывают front() и back(), которые бросают исключение
-	EXPECT_NO_THROW({
+    EXPECT_NO_THROW({
     auto b = v.begin();
     auto e = v.end();
     EXPECT_EQ(b, e);
