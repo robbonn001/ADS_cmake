@@ -1,4 +1,4 @@
-// Copyright 2026 Igor
+//  Copyright 2026 Igor
 #pragma once
 #include "memdata.h"
 #include <cstdlib>
@@ -7,10 +7,11 @@
 
 template <class T> class Vector {
   MemData<T> storage_;
-  size_t front_; // индекс первого элемента
-  size_t back_; // индекс ПОСЛЕ последнего элемента
+  size_t front_; //  индекс первого элемента
+  size_t back_; //  индекс ПОСЛЕ последнего элемента
 
 public:
+
   Vector(size_t size = 0, const T *array = nullptr);
   explicit Vector(const std::initializer_list<T> list);
   explicit Vector(const Vector<T> &other);
@@ -106,7 +107,7 @@ public:
   void resize(size_t new_size);
   void defragment() noexcept;
   void
-  realloc(size_t new_capacity) { // перевыделение памяти с сохранением данных
+  realloc(size_t new_capacity) { //  перевыделение памяти с сохранением данных
     storage_.realloc(new_capacity, front_, size());
   }
 
@@ -171,7 +172,7 @@ template <class T>
 Vector<T>::Vector(const Vector<T> &other)
     : storage_(other.size()), front_(other.front_), back_(other.back_) {
   for (size_t i = 0; i < size(); ++i) {
-    (*this)[i] = other[i]; // копируем элементы, учитывая смещение front_
+    (*this)[i] = other[i]; //  копируем элементы, учитывая смещение front_
   }
 }
 
@@ -222,9 +223,9 @@ template <class T> void Vector<T>::resize(size_t new_size) {
   size_t current_capacity = capacity();
 
   if (needed > current_capacity) {
-    // Если front большой — сначала дефрагментируем
+    //  Если front большой — сначала дефрагментируем
     if (front_ > current_capacity / 2) {
-      defragment(); // front_ = 0, back_ = size()
+      defragment(); //  front_ = 0, back_ = size()
     }
     storage_.realloc(storage_.calculateCapacity_(new_size), 0, size());
   }
@@ -234,11 +235,11 @@ template <class T> void Vector<T>::resize(size_t new_size) {
 
 template <class T> void Vector<T>::defragment() noexcept {
   if (front_ == 0)
-    return; // уже в начале
+    return; //  уже в начале
 
   size_t current_size = size();
 
-  // Сдвигаем элементы в начало
+  //  Сдвигаем элементы в начало
   for (size_t i = 0; i < current_size; ++i) {
     storage_[i] = std::move(storage_[getDataIndex(i)]);
   }
@@ -254,7 +255,7 @@ template <class T> void Vector<T>::pushFront(const T &element) {
     storage_.reallocWithShiftRight(storage_.calculateCapacity_(size() + 1), 0,
                                    size());
     back_++;
-  } else { // Если front_ == 0, но вектор не полный, сдвигаем элементы вправо
+  } else { //  Если front_ == 0, но вектор не полный, сдвигаем элементы вправо
     storage_.shiftRight(0, size());
     back_++;
   }
@@ -368,9 +369,9 @@ Vector<T> &Vector<T>::operator=(const Vector<T> &other) noexcept {
     front_ = other.front_;
     back_ = other.back_;
     storage_.allocateRaw(
-        other.capacity()); // резервируем память под элементы и удаляем старые
+        other.capacity()); //  резервируем память под элементы и удаляем старые
     for (size_t i = 0; i < size(); ++i) {
-      (*this)[i] = other[i]; // копируем элементы, учитывая смещение front_
+      (*this)[i] = other[i]; //  копируем элементы, учитывая смещение front_
     }
   }
   return (*this);

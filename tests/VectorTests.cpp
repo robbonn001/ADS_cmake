@@ -3,6 +3,7 @@
 #include "gtest/gtest.h"
 #include <stdexcept>
 #include <string>
+#include <utility>
 
 // ============================================================
 // Тесты MemData
