@@ -1,6 +1,7 @@
 // Copyright 2026 Igor
 #pragma once
 #include <stdexcept>
+#include <utility>
 
 template <class T>
 class StackOnMass {
@@ -26,24 +27,23 @@ class StackOnMass {
 
         template <class U>
     friend void swap(StackOnMass<U>& first, StackOnMass<U>& second) noexcept;
-
-}; 
+};
 
 template <class T>
 inline StackOnMass<T>::StackOnMass(): size_(0), top_(-1), data_(nullptr) {}
 
 template <class T>
-inline StackOnMass<T>::StackOnMass(size_t size): 
+inline StackOnMass<T>::StackOnMass(size_t size):
     size_(size), top_(-1), data_(new T[size]()) {}
 
 template <class T>
-inline StackOnMass<T>::StackOnMass(const StackOnMass<T>& other): 
+inline StackOnMass<T>::StackOnMass(const StackOnMass<T>& other):
     size_(other.size_), top_(other.top_), data_(new T[other.size_]()) {
-    for (size_t i=0;i<size_;++i) data_[i] = other.data_[i];
+    for (size_t i = 0;i < size_;++i) data_[i] = other.data_[i];
 }
 
 template <class T>
-inline StackOnMass<T>::StackOnMass(StackOnMass<T>&& other) noexcept: 
+inline StackOnMass<T>::StackOnMass(StackOnMass<T>&& other) noexcept:
     size_(0), top_(-1), data_(nullptr) {
     swap(*this, other);
 }
@@ -93,7 +93,7 @@ inline StackOnMass<T>& StackOnMass<T>::operator=(const StackOnMass<T>& other) {
 }
 
 template <class T>
-StackOnMass<T>& StackOnMass<T>::operator=(StackOnMass<T>&& other) 
+StackOnMass<T>& StackOnMass<T>::operator=(StackOnMass<T>&& other)
 noexcept {
     if (this != &other) {
         if (data_) delete[] data_;

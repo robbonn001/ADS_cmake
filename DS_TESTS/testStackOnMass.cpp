@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <stdexcept>
+#include <utility>
 #include "../LibStackOnMass/StackOnMass.h"
 
 // Тест начального состояния
