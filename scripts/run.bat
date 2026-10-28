@@ -24,7 +24,7 @@ if %errorlevel% equ 0 (
     :: Флаг, нашли ли мы файл
     set "found="
     
-    :: Ищем файл .slnx в текущей папке (build)
+    :: Ищем файл .sln в текущей папке (build)
     for %%f in (*.sln) do (
         set "found=1"
         echo Найдено решение: %%f

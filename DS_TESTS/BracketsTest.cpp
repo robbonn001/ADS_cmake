@@ -1,6 +1,6 @@
 // Copyright 2026 Igor
-
 #include <gtest/gtest.h>
+#include <string>
 #include "../Algorithms/brackets.cpp"
 
 TEST(TestBracket, checkTrue) {

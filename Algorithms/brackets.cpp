@@ -1,6 +1,5 @@
 // Copyright 2026 Igor
-#include "../LibStackOnMass/StackOnMass.h"
-#include <string>
+#include "brackets.h"
 
 bool checkBreackets(std::string expression) {
     StackOnMass<char> stack(expression.size());
