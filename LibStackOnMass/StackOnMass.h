@@ -9,7 +9,7 @@ class StackOnMass {
     size_t size_;
     int top_;
 
-     public:
+      public:
         StackOnMass();
         explicit StackOnMass(size_t size);
         StackOnMass(const StackOnMass<T>& other);
@@ -39,7 +39,7 @@ inline StackOnMass<T>::StackOnMass(size_t size):
 template <class T>
 inline StackOnMass<T>::StackOnMass(const StackOnMass<T>& other):
     size_(other.size_), top_(other.top_), data_(new T[other.size_]()) {
-    for (size_t i = 0;i < size_;++i) data_[i] = other.data_[i];
+    for (size_t i = 0; i < size_; ++i) data_[i] = other.data_[i];
 }
 
 template <class T>

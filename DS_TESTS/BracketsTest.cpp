@@ -1,7 +1,7 @@
 // Copyright 2026 Igor
 #include <gtest/gtest.h>
 #include <string>
-#include "../Algorithms/brackets.cpp"
+#include "../Algorithms/brackets.h"
 
 TEST(TestBracket, checkTrue) {
     std::string expression = "{(())()[()()]}";
