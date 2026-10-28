@@ -9,7 +9,7 @@ class StackOnMass {
     size_t size_;
     int top_;
 
-      public:
+ public:
         StackOnMass();
         explicit StackOnMass(size_t size);
         StackOnMass(const StackOnMass<T>& other);

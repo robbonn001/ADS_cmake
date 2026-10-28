@@ -7,8 +7,7 @@ bool checkBreackets(std::string expression) {
     for (char symbol : expression) {
         if (symbol =='(' || symbol == '[' || symbol == '{') {
             stack.push(symbol);
-        }
-        else {
+        } else {
             if (symbol == ')' || symbol == ']' || symbol == '}') {
                 if (stack.isEmpty()) return false;
                 char openBracket = stack.pop();
