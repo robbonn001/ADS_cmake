@@ -50,11 +50,11 @@ class List {
     }
     NodeType* get_node() noexcept { return current_; }
     const Node<T>* get_node() const noexcept { return current_; }
-    bool operator!=(const Iterator<ValueType, NodeType>& other) 
+    bool operator!=(const Iterator<ValueType, NodeType>& other)
         const noexcept {
       return current_ != other.current_;
     }
-    bool operator==(const Iterator<ValueType, NodeType>& other) 
+    bool operator==(const Iterator<ValueType, NodeType>& other)
         const noexcept {
       return current_ == other.current_;
     }
