@@ -6,6 +6,6 @@ struct Node {
     T data_;
     Node* next_;
 
-    explicit Node(const T& data, Node* next = nullptr) : 
+    explicit Node(const T& data, Node* next = nullptr) :
         data_(data), next_(next) {}
 };
