@@ -3,7 +3,7 @@
 #include <string>
 #include <stdexcept>
 #include <utility>
-#include "../LibStackOnMass/StackOnMass.h"
+#include "StackOnMass.h"
 
 // Тест начального состояния
 TEST(StackTest, InitialState) {
