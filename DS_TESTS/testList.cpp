@@ -1,7 +1,9 @@
 // Copyright 2026 Igor
 #include <gtest/gtest.h>
-#include "List.h"
 #include <string>
+#include <stdexcept>
+#include <utility>
+#include "List.h"
 
 // Тест начального состояния
 TEST(ListTest, InitialState) {
@@ -44,7 +46,7 @@ TEST(ListTest, InsertByIndex) {
     list.push_back(10);
     list.push_back(30);
 
-    list.insert(20, 1); // Вставка между 10 и 30
+    list.insert(20, 1);  // Вставка между 10 и 30
 
     EXPECT_EQ(list.size(), 3);
     EXPECT_EQ(list.pop_front(), 10);
@@ -59,7 +61,7 @@ TEST(ListTest, InsertByIndex) {
     list.insert(60, 3);
 
     EXPECT_EQ(list.pop_front(), 5);
-    list.pop_front(); // 40 (если бы вставили, но мы проверим проще)
+    list.pop_front();  // 40 (если бы вставили, но мы проверим проще)
 }
 
 // Уточненный тест insert по индексу
@@ -116,13 +118,13 @@ TEST(ListTest, Erase) {
     list.push_back(30);
     list.push_back(40);
 
-    EXPECT_EQ(list.erase(1), 20); // Удаляем из середины
+    EXPECT_EQ(list.erase(1), 20);  // Удаляем из середины
     EXPECT_EQ(list.size(), 3);
 
-    EXPECT_EQ(list.erase(0), 10); // Удаляем из начала
+    EXPECT_EQ(list.erase(0), 10);  // Удаляем из начала
     EXPECT_EQ(list.size(), 2);
 
-    EXPECT_EQ(list.erase(1), 40); // Удаляем из конца (индекс 1 при размере 2)
+    EXPECT_EQ(list.erase(1), 40);  // Удаляем из конца (индекс 1 при размере 2)
     EXPECT_EQ(list.size(), 1);
     EXPECT_EQ(list.pop_front(), 30);
     EXPECT_TRUE(list.isEmpty());
