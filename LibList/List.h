@@ -19,31 +19,33 @@ class List {
   Node<T>* push_front(const T& val) noexcept;
   Node<T>* push_back(const T& val) noexcept;
   Node<T>* insert(const T& val, size_t index);
-  Node<T>* insert(const T& val, Node<T>* node);
+  Node<T>* insert(Node<T>* node, const T& val);
 
   T pop_front();
   T pop_back();
   T erase(size_t index);
 
-  bool isEmpty() const noexcept { size_ == 0; }
+  bool isEmpty() const noexcept { return size_ == 0; }
   Node<T>* find(const T& val) const noexcept;
   size_t size() const noexcept { return size_; }
 };
 
 template <typename T>
 List<T>::~List() {
-  Node<T>* next = nullptr;
-  while (!head_) {
-    next = head_->next_;
-    delete head_;
-    head_ = next;
-  }
+    if (!isEmpty()) {
+        Node<T>* next = nullptr;
+        while (head_) {
+            next = head_->next_;
+            delete head_;
+            head_ = next;
+        }
+    }
 }
 
 template <typename T>
 List<T>::List(const List& other) : size_(0), head_(nullptr), tail_(nullptr) {
   Node<T>* cur = other.head_;
-  while (!cur) {
+  while (cur) {
     push_back(cur->data_);
     cur = cur->next_;
   }
@@ -61,10 +63,10 @@ template <typename T>
 Node<T>* List<T>::push_front(const T& val) noexcept {
   Node<T>* new_node = new Node<T>(val, head_);
   if (isEmpty()) {
-    tail = new_node;
+    tail_ = new_node;
   }
   head_ = new_node;
-  ++count;
+  ++size_;
   return new_node;
 }
 
@@ -74,10 +76,10 @@ Node<T>* List<T>::push_back(const T& val) noexcept {
   if (isEmpty()) {
     head_ = new_node;
   } else {
-    tail_->next = new_node;
+    tail_->next_ = new_node;
   }
-  tail = new_node;
-  ++count;
+  tail_ = new_node;
+  ++size_;
   return new_node;
 }
 
@@ -96,18 +98,18 @@ Node<T>* List<T>::insert(const T& val, size_t index) {
   }
   Node<T>* new_node = new Node<T>(val, cur->next_);
   cur->next_ = new_node;
-  ++count;
+  ++size_;
   return new_node;
 }
 
 template <typename T>
-Node<T>* List<T>::insert(const T& val, Node<T>* node) {
+Node<T>* List<T>::insert(Node<T>* node, const T& val) {
   if (!node) {
     throw std::invalid_argument("Node is nullptr!");
   }
   Node<T>* new_node = new Node<T>(val, node->next_);
   node->next_ = new_node;
-  ++count;
+  ++size_;
   return new_node;
 }
 
@@ -117,10 +119,10 @@ T List<T>::pop_front() {
     throw std::out_of_range("List is empty!");
   }
   T res = head_->data_;
-  Node* temp = head_;
-  head_ = head_->next;
+  Node<T>* temp = head_;
+  head_ = head_->next_;
   delete temp;
-  --size;
+  --size_;
   return res;
 }
 
@@ -129,7 +131,7 @@ T List<T>::pop_back() {
   if (isEmpty()) {
     throw std::out_of_range("List is empty!");
   }
-  if (size == 1) {
+  if (size_ == 1) {
     return pop_front();
   }
   Node<T>* temp = head_;
@@ -137,8 +139,8 @@ T List<T>::pop_back() {
     temp = temp->next_;
   }
   T res = tail_->data_;
-  delete temp->next_;
-  --size;
+  delete tail_;
+  --size_;
   tail_ = temp;
   return res;
 }
@@ -147,7 +149,7 @@ template <typename T>
 T List<T>::erase(size_t index) {
   if (isEmpty()) {
     throw std::out_of_range("List is empty!");
-  } else if (index > size_) {
+  } else if (index >= size_) {
     throw std::out_of_range("Index is out of range!");
   } else if (index == 0) {
     return pop_front();
@@ -162,14 +164,14 @@ T List<T>::erase(size_t index) {
   cur->next_ = to_del->next_;
   T res = to_del->data_;
   delete to_del;
-  --count;
+  --size_;
   return res;
 }
 
 template <typename T>
 Node<T>* List<T>::find(const T& val) const noexcept {
   Node<T>* cur = head_;
-  while (!cur) {
+  while (cur) {
     if (cur->data_ == val) {
       return cur;
     }
