@@ -20,7 +20,7 @@ class MultiStack {
   void repack(size_t sector);
 
  public:
-  MultiStack(size_t totalSize, size_t sectors = 1)
+  explicit MultiStack(size_t totalSize, size_t sectors = 1)
       : totalSize_(totalSize),
         sectors_(sectors),
         size_(0),
@@ -38,9 +38,9 @@ class MultiStack {
   }
 
   MultiStack(const MultiStack<T>& other);
-  MultiStack(MultiStack<T>&& other);
+  MultiStack(MultiStack<T>&& other) noexcept;
   MultiStack<T>& operator=(const MultiStack<T>& other);
-  MultiStack<T>& operator=(MultiStack<T>&& other);
+  MultiStack<T>& operator=(MultiStack<T>&& other) noexcept;
 
   ~MultiStack() {
     delete[] data_;
@@ -107,7 +107,7 @@ inline MultiStack<T>::MultiStack(const MultiStack<T>& other)
 }
 
 template <class T>
-inline MultiStack<T>::MultiStack(MultiStack<T>&& other)
+inline MultiStack<T>::MultiStack(MultiStack<T>&& other) noexcept
     : size_(other.size_),
       totalSize_(other.totalSize_),
       sectors_(other.sectors_),
@@ -134,7 +134,7 @@ inline MultiStack<T>& MultiStack<T>::operator=(const MultiStack<T>& other) {
 }
 
 template <class T>
-inline MultiStack<T>& MultiStack<T>::operator=(MultiStack<T>&& other) {
+inline MultiStack<T>& MultiStack<T>::operator=(MultiStack<T>&& other) noexcept {
   if (this == &other) return *this;
   MultiStack<T> temp(std::move(other));
   swap(*this, temp);
@@ -187,7 +187,7 @@ inline void MultiStack<T>::repack(size_t sector) {
     }
   } else {
     for (size_t i = 1; i < sectors_; ++i) {
-      size_t step = oldLefts[i] - lefts_[i];
+      size_t step = (long long)oldLefts[i] - lefts_[i];
       if (i == sector) {
         if (step > 0) {
           shiftLeft(i, step);
