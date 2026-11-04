@@ -14,36 +14,30 @@ cd build
 
 :: Запускаем генерацию проекта CMake (для Visual Studio)
 echo Запуск CMake...
-cmake -G "Visual Studio 17 2022" ..
+cmake -G "Visual Studio 18 2026" ..
 
-:: Проверяем, успешно ли отработал CMake
-if %errorlevel% equ 0 (
-    echo.
-    echo [УСПЕХ] Проект успешно сгенерирован! Ищу файл решения...
-    
-    :: Флаг, нашли ли мы файл
-    set "found="
-    
-    :: Ищем файл .sln в текущей папке (build)
-    for %%f in (*.sln) do (
-        set "found=1"
-        echo Найдено решение: %%f
-        echo Открываю...
-        :: Используем Проводник для гарантированного открытия файла по умолчанию
-        explorer.exe "%%f"
-        goto :exit_script
+:: 1. Сначала пробуем найти и открыть новый формат .slnx
+for %%f in (*.slnx) do (
+    if defined VS_PATH (
+        echo Открываю современное решение %%f через Visual Studio...
+        start "" "%VS_PATH%" "%%f"
+    ) else (
+        start "" "%%f"
     )
+    goto :exit_script
+)
     
-    if not defined found (
-        echo [ОШИБКА] Файл .sln не найден в папке build!
-        echo Содержимое папки build:
-        dir /b *.sln 2>nul || echo (Файлы .sln отсутствуют)
-        pause
+cmake -G "Visual Studio 17 2022" ..
+    
+:: 2. Если .slnx нет, ищем классический .sln
+for %%f in (*.sln) do (
+    if defined VS_PATH (
+        echo Открываю классическое решение %%f через Visual Studio...
+        start "" "%VS_PATH%" "%%f"
+    ) else (
+        start "" "%%f"
     )
-) else (
-    echo.
-    echo [ОШИБКА] Ошибка при генерации проекта CMake. Решение не будет открыто.
-    pause
+    goto :exit_script
 )
 
 :exit_script
