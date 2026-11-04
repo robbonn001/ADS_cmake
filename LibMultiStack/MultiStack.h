@@ -187,17 +187,10 @@ inline void MultiStack<T>::repack(size_t sector) {
     }
   } else {
     for (size_t i = 1; i < sectors_; ++i) {
-      size_t step = (long long)oldLefts[i] - lefts_[i];
-      if (i == sector) {
-        if (step > 0) {
-          shiftLeft(i, step);
-        } else if (step < 0) {
-          shiftRight(i, -step);
-        }
-      } else if (i > sector) {
-        shiftRight(i, -step);
-      } else if (i < sector) {
-        shiftLeft(i, step);
+      if (i <= sector) {
+        shiftLeft(i, oldLefts[i] - lefts_[i]);
+      } else {
+        shiftRight(i, lefts_[i] - oldLefts[i]);
       }
     }
   }
