@@ -96,11 +96,8 @@ template <class T>
 StackOnMass<T>& StackOnMass<T>::operator=(StackOnMass<T>&& other)
 noexcept {
     if (this != &other) {
-        if (data_) delete[] data_;
-        top_ = -1;
-        size_ = 0;
-        data_ = nullptr;
-        swap(*this, other);
+        StackOnMass<T> temp(std::move(other));
+        swap(*this, temp);
     }
     return (*this);
 }

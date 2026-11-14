@@ -32,6 +32,37 @@ TEST(StackTest, BasicOperations) {
     EXPECT_TRUE(stack.isEmpty());
 }
 
+TEST(StackTest, Push) {
+  StackOnMass<int> stack(3);
+
+  EXPECT_TRUE(stack.isEmpty());
+  stack.push(10);
+  EXPECT_FALSE(stack.isEmpty());
+  EXPECT_EQ(stack.top(), 10);
+  stack.push(20);
+  EXPECT_EQ(stack.top(), 20);
+  EXPECT_FALSE(stack.isFull());
+  stack.push(30);
+  EXPECT_EQ(stack.top(), 30);
+  EXPECT_TRUE(stack.isFull());
+}
+
+TEST(StackTest, Pop) {
+  StackOnMass<int> stack(3);
+
+  stack.push(10);
+  stack.push(20);
+  stack.push(30);
+
+  EXPECT_TRUE(stack.isFull());
+  EXPECT_EQ(stack.top(), 30);
+
+  EXPECT_EQ(stack.pop(), 30);
+  EXPECT_EQ(stack.pop(), 20);
+  EXPECT_EQ(stack.pop(), 10);
+  EXPECT_TRUE(stack.isEmpty());
+}
+
 // Тест работы до заполнения
 TEST(StackTest, FullStack) {
     StackOnMass<int> stack(3);
