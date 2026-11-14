@@ -14,7 +14,7 @@ class Queue {
   T* data_;
 
  public:
-  Queue(size_t size = 0);
+  explicit Queue(size_t size = 0);
   Queue(const Queue<T>& other);
   Queue(Queue<T>&& other) noexcept;
   ~Queue();
