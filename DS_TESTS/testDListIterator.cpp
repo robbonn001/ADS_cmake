@@ -70,7 +70,7 @@ TEST(DIteratorTest, ConstDIteratorCannotModify) {
 
   const DList<int>& const_list = list;
 
-  int i=0;
+  int i = 0;
   for (auto it = const_list.begin(); it != const_list.end(); ++it) {
     EXPECT_EQ(*it, ++i);
   }
