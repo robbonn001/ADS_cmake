@@ -204,8 +204,3 @@ TEST(ListTest, SingleElementList) {
   EXPECT_EQ(list.pop_back(), 99);
   EXPECT_TRUE(list.isEmpty());
 }
-
-int main(int argc, char** argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}

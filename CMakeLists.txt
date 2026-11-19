@@ -15,6 +15,7 @@ include(cmake/function.cmake)         # подхватываем функции,
 
 add_subdirectory(LibStackOnMass)
 add_subdirectory(LibList)
+add_subdirectory(LibDList)
 
 add_subdirectory(Algorithms)    # подключаем дополнительный CMakeLists.txt из подкаталога с именем Algorithms
 

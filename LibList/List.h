@@ -49,7 +49,6 @@ class List {
       return temp;
     }
     NodeType* get_node() noexcept { return current_; }
-    const Node<T>* get_node() const noexcept { return current_; }
     bool operator!=(const Iterator<ValueType, NodeType>& other)
         const noexcept {
       return current_ != other.current_;
@@ -60,22 +59,22 @@ class List {
     }
   };
 
-  typedef Iterator<T, Node<T>> list_iterator;
-  typedef Iterator<const T, const Node<T>> const_list_iterator;
+  typedef Iterator<T, Node<T>> iterator;
+  typedef Iterator<const T, const Node<T>> const_iterator;
 
-  list_iterator begin() noexcept { return list_iterator(head_); }
-  list_iterator end() noexcept { return list_iterator(nullptr); }
-  const_list_iterator begin() const noexcept {
-    return const_list_iterator(head_);
+  iterator begin() noexcept { return iterator(head_); }
+  iterator end() noexcept { return iterator(nullptr); }
+  const_iterator begin() const noexcept {
+    return const_iterator(head_);
   }
-  const_list_iterator end() const noexcept {
-    return const_list_iterator(nullptr);
+  const_iterator end() const noexcept {
+    return const_iterator(nullptr);
   }
-  const_list_iterator cbegin() const noexcept {
-    return const_list_iterator(head_);
+  const_iterator cbegin() const noexcept {
+    return const_iterator(head_);
   }
-  const_list_iterator cend() const noexcept {
-    return const_list_iterator(nullptr);
+  const_iterator cend() const noexcept {
+    return const_iterator(nullptr);
   }
 };
 

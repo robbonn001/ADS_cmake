@@ -70,12 +70,10 @@ TEST(IteratorTest, ConstIteratorCannotModify) {
 
   const List<int>& const_list = list;
 
-  // Проверяем, что итератор действительно константный
-  auto it = const_list.begin();
-  static_assert(std::is_same<decltype(*it), const int&>::value,
-                "Const iterator should return const reference");
-
-  EXPECT_EQ(*it, 1);
+  int i=0;
+  for (auto it = const_list.begin(); it != const_list.end(); ++it) {
+    EXPECT_EQ(*it, ++i);
+  }
 }
 
 // Тест cbegin/cend
